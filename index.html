@@ -1,50 +1,327 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Mother's Day Tribute</title>
-<link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Two Favorites | Mother's Day</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;1,400&family=Homemade+Apple&family=Short+Stack&display=swap" rel="stylesheet">
+    
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+    <style>
+        :root {
+            --felt-cream: #f9f4ef;
+            --fuzzy-peach: #f2cc8f;
+            --cat-brown: #8d99ae;
+            --rose-wool: #e07a5f;
+            --yarn-gold: #f4a261;
+            --deep-ink: #3d405b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><text y="15" font-size="15">🐾</text></svg>'), auto; }
+
+        body {
+            background-color: var(--felt-cream);
+            color: var(--deep-ink);
+            font-family: 'Crimson Pro', serif;
+            overflow-x: hidden;
+            /* Background Pattern: Subtle Cat Silhouettes */
+            background-image: 
+                url("https://www.transparenttextures.com/patterns/felt.png"),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 10c-5 0-7 5-7 5s-2-5-7-5-7 10-7 10 5 10 14 15c9-5 14-15 14-15s-2-10-7-10z' fill='%23e07a5f' fill-opacity='0.05'/%3E%3C/svg%3E");
+        }
+
+        /* --- FUZZY LAYERS --- */
+        .page-noise {
+            position: fixed; inset: 0;
+            background: url('https://www.transparenttextures.com/patterns/natural-paper.png');
+            opacity: 0.4; pointer-events: none; z-index: 100;
+        }
+
+        .cat-vignette {
+            position: fixed; inset: 0;
+            background: radial-gradient(circle, transparent 20%, rgba(224, 122, 95, 0.05) 100%);
+            pointer-events: none; z-index: 99;
+        }
+
+        /* --- SCRAPBOOK CLUTTER --- */
+        .clutter {
+            position: absolute; pointer-events: none; z-index: 1; filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.1));
+        }
+
+        /* --- REUSABLE FUZZY CARD --- */
+        .fuzzy-card {
+            background: white;
+            padding: 40px;
+            border-radius: 40px 10px 40px 10px;
+            box-shadow: 15px 15px 0px var(--fuzzy-peach);
+            border: 3px dashed var(--rose-wool);
+            position: relative;
+            z-index: 10;
+        }
+
+        .polaroid {
+            background: #fff;
+            padding: 15px 15px 50px 15px;
+            box-shadow: 8px 10px 20px rgba(0,0,0,0.08);
+            transform: rotate(var(--r));
+            transition: transform 0.3s;
+            position: relative;
+        }
+        .polaroid:hover { transform: scale(1.05) rotate(0deg); z-index: 50; }
+        .polaroid img { width: 100%; height: auto; border-radius: 2px; }
+        .polaroid::after {
+            content: '😻'; position: absolute; top: -10px; right: -10px; font-size: 1.5rem;
+        }
+
+        .washi-tape {
+            position: absolute; width: 100px; height: 30px;
+            background: rgba(244, 162, 97, 0.6);
+            top: -15px; left: 50%; transform: translateX(-50%) rotate(-2deg);
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+        }
+
+        /* --- CAT ANIMATIONS --- */
+        .peaking-cat {
+            position: fixed; bottom: -10px; width: 150px; z-index: 200;
+            transition: transform 0.5s;
+        }
+        .peaking-cat:hover { transform: translateY(-50px); }
+
+        /* --- SECTIONS --- */
+        section { min-height: 100vh; width: 100%; position: relative; display: flex; align-items: center; justify-content: center; padding: 100px 5vw; }
+
+        .hero-title {
+            font-family: 'Short Stack', cursive;
+            font-size: clamp(2rem, 6vw, 4.5rem);
+            line-height: 1.1;
+            text-align: center;
+        }
+
+        .handwritten { font-family: 'Homemade Apple', cursive; color: var(--rose-wool); }
+
+        /* --- THE YARN UNLOCKER --- */
+        .yarn-ball-container {
+            text-align: center; cursor: pointer;
+        }
+        .yarn-ball {
+            width: 120px; animation: roll 4s infinite ease-in-out;
+        }
+        @keyframes roll {
+            0%, 100% { transform: rotate(-10deg) translateX(0); }
+            50% { transform: rotate(10deg) translateX(20px); }
+        }
+
+        /* --- SCRAPBOOK GRID --- */
+        .scrapbook-layout {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-template-rows: repeat(8, 100px);
+            width: 100%; max-width: 1200px;
+            gap: 20px;
+        }
+
+        /* --- WIFE SECTION (HIDDEN) --- */
+        #wife-section { display: none; opacity: 0; background: #fdfaf0; }
+
+        .counter-box {
+            background: var(--rose-wool); color: white;
+            padding: 20px 40px; border-radius: 100px;
+            font-family: 'Short Stack', cursive;
+            display: inline-block; transform: rotate(-2deg);
+        }
+
+        /* --- DECORATIVE CATS --- */
+        .cat-icon { font-size: 3rem; position: absolute; }
+    </style>
 </head>
 <body>
-<div class="container">
-  <!-- Opening Screen -->
-  <section id="opening" class="screen active">
-    <div class="background"></div>
-    <div class="text">
-      <h1>Before she became my safe place…</h1>
-      <h2>she was first held by yours.</h2>
-      <button id="nextBtn">Happy Mother’s Day</button>
-    </div>
-  </section>
-  
-  <!-- Section 1: Greeting Her Mother -->
-  <section id="section1" class="screen">
-    <div class="content">
-      <!-- Photos & narration will go here -->
-      <h3>You raised someone who loves with softness...</h3>
-      <div class="photos"></div>
-    </div>
-  </section>
 
-  <!-- Interactive Trigger Object -->
-  <div id="triggerObject" class="hidden">
-    <button id="revealGift">There’s one more thing waiting</button>
-  </div>
+    <div class="page-noise"></div>
+    <div class="cat-vignette"></div>
 
-  <!-- Section 2: Your Wife’s Gift -->
-  <section id="section2" class="screen">
-    <div class="gift-content">
-      <!-- Pawprint trail, counter, pet scene, voice note -->
-    </div>
-  </section>
+    <!-- FLOATING CAT CLUTTER -->
+    <div class="cat-icon" style="top: 10%; left: 5%; opacity: 0.2;">🧶</div>
+    <div class="cat-icon" style="top: 40%; right: 5%; opacity: 0.2;">🐟</div>
+    <div class="cat-icon" style="bottom: 10%; left: 8%; opacity: 0.2;">🐈‍⬛</div>
+    <div class="cat-icon" style="top: 15%; right: 15%; opacity: 0.1;">🐾</div>
 
-  <!-- Ending -->
-  <section id="ending" class="screen">
-    <h2>Happy Mother’s Day</h2>
-  </section>
-</div>
+    <!-- INTRO -->
+    <section>
+        <div style="z-index: 10; text-align: center;">
+            <p class="handwritten" style="font-size: 2rem; margin-bottom: 20px;">For the woman who raised</p>
+            <h1 class="hero-title">The Woman <br> <span style="color: var(--rose-wool)">I Love.</span></h1>
+            <div style="margin-top: 50px;">
+                <span class="cat-icon" style="position: relative; display: inline-block; animation: bounce 2s infinite;">🐱</span>
+            </div>
+            <p style="margin-top: 20px; letter-spacing: 5px; font-size: 0.8rem; opacity: 0.6;">SCROLL TO OPEN THE SCRAPBOOK</p>
+        </div>
+        
+        <!-- Stickers -->
+        <img src="https://openmoji.org/data/color/svg/1F431.svg" class="clutter" style="top: 20%; right: 10%; width: 100px; transform: rotate(15deg);">
+        <img src="https://openmoji.org/data/color/svg/1F338.svg" class="clutter" style="bottom: 20%; left: 10%; width: 80px;">
+    </section>
 
-<script src="script.js"></script>
+    <!-- MOTHER'S SECTION -->
+    <section>
+        <div class="scrapbook-layout">
+            <!-- Story Piece 1 -->
+            <div class="fuzzy-card" style="grid-column: 1 / 7; grid-row: 1 / 5;">
+                <div class="washi-tape"></div>
+                <h2 class="handwritten" style="font-size: 2.5rem;">Dearest Mom,</h2>
+                <p style="margin-top: 15px; font-size: 1.2rem; line-height: 1.8;">
+                    They say you can tell the heart of a woman by the love she gives. Looking at your daughter, I see a lifetime of your patience, your warmth, and your cat-like curiosity for life.
+                </p>
+                <p class="handwritten" style="margin-top: 20px;">Thank you for her.</p>
+            </div>
+
+            <!-- Polaroid 1 -->
+            <div class="polaroid" style="grid-column: 8 / 12; grid-row: 2 / 6; --r: 4deg;">
+                <img src="https://images.unsplash.com/photo-1516733725897-1aa73b87c8e8?w=500" alt="Family">
+                <p class="handwritten" style="text-align: center; margin-top: 10px;">The original duo.</p>
+            </div>
+
+            <!-- Cat Clutter -->
+            <div style="grid-column: 7 / 8; grid-row: 5; font-size: 4rem;">🧶</div>
+        </div>
+    </section>
+
+    <!-- THE LOCK -->
+    <section style="background: rgba(242, 204, 143, 0.2);">
+        <div class="yarn-ball-container" id="yarnUnlock">
+            <p class="handwritten" style="font-size: 1.8rem; margin-bottom: 20px;">Unravel the yarn to see <br> what we've built together...</p>
+            <img src="https://cdn-icons-png.flaticon.com/512/3209/3209593.png" class="yarn-ball" alt="Yarn Ball">
+            <p style="margin-top: 20px; font-size: 0.8rem; font-weight: bold; color: var(--rose-wool);">CLICK THE YARN</p>
+        </div>
+    </section>
+
+    <!-- WIFE'S SECTION -->
+    <section id="wife-section">
+        <div style="width: 100%; max-width: 1100px;">
+            <div style="text-align: center; margin-bottom: 60px;">
+                <div class="counter-box">
+                    <span id="dayCount">0</span> Days of "Us"
+                </div>
+                <h2 class="hero-title" style="margin-top: 30px;">Now I understand why you love <br> the way you do.</h2>
+            </div>
+
+            <div class="scrapbook-layout">
+                <!-- Memory 1 -->
+                <div class="polaroid" style="grid-column: 1 / 5; grid-row: 1 / 4; --r: -3deg;">
+                    <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500" alt="Our Cat">
+                    <p class="handwritten" style="text-align: center; margin-top: 10px;">Our little supervisor.</p>
+                </div>
+
+                <!-- Personal Note -->
+                <div class="fuzzy-card" style="grid-column: 6 / 13; grid-row: 2 / 6;">
+                    <div class="washi-tape" style="background: var(--cat-brown); opacity: 0.5;"></div>
+                    <p class="handwritten" style="font-size: 2rem;">To my beautiful wife,</p>
+                    <p style="margin-top: 10px;">
+                        The way you tuck the blankets in, the way you speak to the cats, the way you make our house feel like a soft place to land... it all makes sense now. You learned from the best, and you became even better.
+                    </p>
+                    <p style="margin-top: 15px; font-weight: bold;">I love our little life.</p>
+                </div>
+
+                <!-- Clickable Kittens -->
+                <div style="grid-column: 2 / 4; grid-row: 5; cursor: pointer;" onclick="alert('Purrrr! You found a hidden kiss!')">
+                    <img src="https://openmoji.org/data/color/svg/1F63B.svg" style="width: 80px;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL FOOTER -->
+    <section style="text-align: center; background: var(--deep-ink); color: var(--felt-cream);">
+        <div style="max-width: 600px;">
+            <h2 class="handwritten" style="font-size: 3rem;">Happy Mother's Day</h2>
+            <p style="margin: 20px 0; opacity: 0.8;">One mother raised the woman I love. And now, together, we're building a little home of our own.</p>
+            <p style="font-size: 3rem;">🐾 🐾 🐾</p>
+        </div>
+    </section>
+
+    <!-- PEAKING CATS -->
+    <img src="https://openmoji.org/data/color/svg/1F431.svg" class="peaking-cat" style="left: 5%;">
+    <img src="https://openmoji.org/data/color/svg/1F638.svg" class="peaking-cat" style="right: 5%;">
+
+    <script>
+        // Smooth Scroll
+        const lenis = new Lenis();
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+
+        // GSAP Scroll Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.from(".fuzzy-card", {
+            scrollTrigger: {
+                trigger: ".fuzzy-card",
+                start: "top bottom",
+            },
+            y: 50,
+            opacity: 0,
+            duration: 1.5,
+            ease: "elastic.out(1, 0.8)"
+        });
+
+        // Yarn Unlock Logic
+        const yarn = document.getElementById('yarnUnlock');
+        const wifeSection = document.getElementById('wife-section');
+
+        yarn.addEventListener('click', () => {
+            // Animate yarn flying away
+            gsap.to(".yarn-ball", { 
+                x: 1000, 
+                rotation: 720, 
+                duration: 2, 
+                ease: "power2.in" 
+            });
+            
+            setTimeout(() => {
+                yarn.style.display = 'none';
+                wifeSection.style.display = 'flex';
+                gsap.to(wifeSection, { opacity: 1, duration: 2 });
+                
+                // Counter Animation
+                const dayCounter = { val: 0 };
+                const targetDays = 1825; // CHANGE TO YOUR DAYS
+                gsap.to(dayCounter, {
+                    val: targetDays,
+                    duration: 5,
+                    onUpdate: () => {
+                        document.getElementById('dayCount').innerHTML = Math.floor(dayCounter.val).toLocaleString();
+                    }
+                });
+
+                lenis.scrollTo(wifeSection);
+            }, 1000);
+        });
+
+        // Add random pawprints on click
+        window.addEventListener('mousedown', (e) => {
+            const paw = document.createElement('div');
+            paw.innerHTML = '🐾';
+            paw.style.position = 'fixed';
+            paw.style.left = e.clientX + 'px';
+            paw.style.top = e.clientY + 'px';
+            paw.style.pointerEvents = 'none';
+            paw.style.zIndex = '1000';
+            paw.style.fontSize = '20px';
+            paw.style.opacity = '0.5';
+            document.body.appendChild(paw);
+
+            gsap.to(paw, {
+                y: -50,
+                opacity: 0,
+                duration: 1,
+                onComplete: () => paw.remove()
+            });
+        });
+    </script>
 </body>
-</html>
+</html> 
