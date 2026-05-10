@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mother's Day Tribute</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="container">
+  <!-- Opening Screen -->
+  <section id="opening" class="screen active">
+    <div class="background"></div>
+    <div class="text">
+      <h1>Before she became my safe place…</h1>
+      <h2>she was first held by yours.</h2>
+      <button id="nextBtn">Happy Mother’s Day</button>
+    </div>
+  </section>
+  
+  <!-- Section 1: Greeting Her Mother -->
+  <section id="section1" class="screen">
+    <div class="content">
+      <!-- Photos & narration will go here -->
+      <h3>You raised someone who loves with softness...</h3>
+      <div class="photos"></div>
+    </div>
+  </section>
+
+  <!-- Interactive Trigger Object -->
+  <div id="triggerObject" class="hidden">
+    <button id="revealGift">There’s one more thing waiting</button>
+  </div>
+
+  <!-- Section 2: Your Wife’s Gift -->
+  <section id="section2" class="screen">
+    <div class="gift-content">
+      <!-- Pawprint trail, counter, pet scene, voice note -->
+    </div>
+  </section>
+
+  <!-- Ending -->
+  <section id="ending" class="screen">
+    <h2>Happy Mother’s Day</h2>
+  </section>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
