@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The Woman Who Raised The Woman I Love</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+<body>
+    <div id="canvas-container"></div> <!-- WebGL Layer -->
+    <div class="vignette-overlay"></div>
+
+    <main id="smooth-wrapper">
+        <div id="smooth-content">
+            
+            <!-- SECTION 1: THE COVER -->
+            <section class="page section-intro">
+                <div class="scrapbook-cover">
+                    <div class="stitched-label">To My Dearest</div>
+                    <p class="instruction">Scroll to Open the Memory</p>
+                </div>
+            </section>
+
+            <!-- SECTION 2: TRIBUTE TO MOTHER -->
+            <section class="page section-mother">
+                <div class="content-box">
+                    <h1 class="handwritten">“Before she became my safe place… she was first held by yours.”</h1>
+                    <div class="polaroid-grid">
+                        <div class="polaroid" id="photo-1">[INSERT FAMILY PHOTO]</div>
+                        <div class="polaroid" id="photo-2">[INSERT MEMORY]</div>
+                    </div>
+                    <div class="taped-note">Happy Mother’s Day</div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: THE YARN (TRANSITION) -->
+            <section class="page section-yarn">
+                <div id="yarn-interaction-zone">
+                    <!-- Three.js Yarn Ball injects here -->
+                </div>
+            </section>
+
+            <!-- SECTION 4: THE WIFE -->
+            <section class="page section-wife">
+                <div class="gift-reveal">
+                    <h2 class="handwritten">Now I understand why you love the way you do.</h2>
+                    <div class="counter-box">
+                        <span id="days-count">0</span>
+                        <p>Days of building our home together</p>
+                    </div>
+                    <!-- Cassette Player UI -->
+                    <div class="cassette-container">
+                        <div class="reel left"></div>
+                        <div class="reel right"></div>
+                        <button id="play-voice">Play Personal Message</button>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script src="shaders.js"></script>
+    <script src="experience.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
